@@ -90,6 +90,6 @@ if ($result && isset($result[0]['BillCode'])) {
     echo json_encode([
         'success' => false,
         'error'   => 'Gagal mencipta bil. Cuba sebentar lagi.',
-        'debug'   => $response  // ← temporary, remove after fix
+        
     ]);
 }
