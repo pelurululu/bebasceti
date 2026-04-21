@@ -15,7 +15,7 @@ define('BREVO_API_KEY',    getenv('BREVO_API_KEY')           ?: 'YOUR_BREVO_API_
 // Ebook
 define('EBOOK_PRICE',      getenv('EBOOK_PRICE')             ?: '1990');  // in cents → RM 19.90
 define('EBOOK_DOWNLOAD_URL', getenv('EBOOK_DOWNLOAD_URL')   ?: 'https://your-domain.com/ebook.pdf');
-define('BILL_NAME',        'Survival Guide - Cara Berhadapan Gangguan Ahlong');
+define('BILL_NAME', 'Survival Guide Ahlong');
 define('BILL_DESC',        'Ebook Survival Guide 2026');
 
 // App
