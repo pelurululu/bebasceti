@@ -87,5 +87,9 @@ if ($result && isset($result[0]['BillCode'])) {
     echo json_encode(['success' => true, 'payment_url' => $paymentUrl]);
 } else {
     error_log("ToyyibPay error response: $response");
-    echo json_encode(['success' => false, 'error' => 'Gagal mencipta bil. Cuba sebentar lagi.']);
+    echo json_encode([
+        'success' => false,
+        'error'   => 'Gagal mencipta bil. Cuba sebentar lagi.',
+        'debug'   => $response  // ← temporary, remove after fix
+    ]);
 }
