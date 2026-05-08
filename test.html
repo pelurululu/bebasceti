@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BebasCeti.my — Anda Mampu Lawan Sendiri</title>
+<meta name="description" content="Sistem taktik pengurusan krisis ahlong Malaysia. Hentikan ugutan, lindungi keluarga, rampas semula kawalan hidup anda — tanpa peguam dan tanpa perunding.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════════ */
+:root{
+  --ink:     #020812;
+  --navy:    #040f22;
+  --deep:    #071530;
+  --panel:   #0a1c3a;
+  --glass:   rgba(255,255,255,0.035);
+  --gb:      rgba(255,255,255,0.06);
+  --line:    rgba(255,255,255,0.07);
+  --line2:   rgba(255,255,255,0.12);
+  --red:     #dc3545;
+  --red-h:   #b02030;
+  --red-glow:rgba(220,53,69,0.25);
+  --amber:   #d4a017;
+  --amber-d: rgba(212,160,23,0.15);
+  --teal:    #0ea5e9;
+  --green:   #10b981;
+  --green-d: rgba(16,185,129,0.12);
+  --text:    #eef2f7;
+  --soft:    #94a3b8;
+  --faint:   #475569;
+  --white:   #ffffff;
+  --serif:   'Cormorant Garamond', Georgia, serif;
+  --sans:    'Plus Jakarta Sans', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+  --r3:3px; --r6:6px; --r8:8px; --r12:12px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--ink);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+/* ── DOT PATTERN ── */
+.dot-bg{background-image:radial-gradient(rgba(255,255,255,0.045) 1px,transparent 1px);background-size:28px 28px}
+.line-bg{background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px}
+
+/* ══ ANNOUNCE BAR ══ */
+.announce{background:linear-gradient(90deg,#9b1c1c,var(--red),#9b1c1c);text-align:center;padding:11px 20px;font-size:12px;font-weight:700;letter-spacing:.6px;color:#fff;position:sticky;top:0;z-index:600}
+.announce em{font-style:normal;opacity:.8;font-weight:400}
+
+/* ══ NAV ══ */
+nav{position:sticky;top:36px;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:0 5%;height:66px;background:rgba(2,8,18,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white);letter-spacing:.5px}
+.logo s{text-decoration:none;color:var(--red)}
+.nav-r{display:flex;align-items:center;gap:28px}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:13px;color:var(--soft);text-decoration:none;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--red);color:#fff;padding:10px 22px;border-radius:var(--r3);font-size:13px;font-weight:700;text-decoration:none;letter-spacing:.4px;transition:background .2s,box-shadow .2s}
+.nav-cta:hover{background:var(--red-h);box-shadow:0 0 20px var(--red-glow)}
+
+/* ══ HERO ══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+
+.hero-photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1541199249251-f713e6145474?w=1600&q=85&auto=format&fit=crop') center 30%/cover no-repeat;transform:scale(1.06);animation:zoomOut 10s ease forwards}
+@keyframes zoomOut{to{transform:scale(1)}}
+
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(110deg,rgba(2,8,18,.97) 0%,rgba(2,8,18,.88) 50%,rgba(4,15,34,.55) 100%)}
+.hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 0% 60%,rgba(220,53,69,.12) 0%,transparent 65%)}
+
+.hero-inner{position:relative;z-index:2;padding:0 5%;width:100%;max-width:820px}
+
+.badge-pill{display:inline-flex;align-items:center;gap:9px;background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.3);padding:7px 16px;border-radius:40px;margin-bottom:32px;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:#fc8181;text-transform:uppercase;opacity:0;animation:up .7s .1s both}
+.badge-pill span{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero h1{font-family:var(--serif);font-size:clamp(52px,8.5vw,102px);font-weight:700;line-height:.93;color:var(--white);opacity:0;animation:up .7s .2s both}
+.hero h1 i{display:block;color:var(--red);font-style:italic}
+
+.hero-lead{font-size:clamp(15px,1.8vw,17px);color:var(--soft);line-height:1.8;max-width:520px;margin:26px 0 40px;opacity:0;animation:up .7s .35s both}
+.hero-lead b{color:var(--text)}
+
+.hero-checks{display:flex;flex-direction:column;gap:11px;margin-bottom:44px;opacity:0;animation:up .7s .45s both}
+.hck{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text)}
+.hck-dot{width:18px;height:18px;border-radius:50%;background:var(--green-d);border:1px solid rgba(16,185,129,.35);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:10px;flex-shrink:0;margin-top:2px}
+
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;opacity:0;animation:up .7s .55s both}
+
+.btn-main{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:#fff;padding:17px 36px;border-radius:var(--r3);font-weight:800;font-size:15px;text-decoration:none;border:none;cursor:pointer;font-family:var(--sans);position:relative;overflow:hidden;transition:background .2s,transform .2s,box-shadow .2s;letter-spacing:.3px}
+.btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-100%);transition:transform .5s}
+.btn-main:hover::before{transform:translateX(100%)}
+.btn-main:hover{background:var(--red-h);transform:translateY(-2px);box-shadow:0 16px 40px rgba(220,53,69,.35)}
+
+.btn-ghost-sm{color:var(--soft);font-size:13.5px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.btn-ghost-sm:hover{color:var(--text)}
+
+.hero-pills{margin-top:52px;display:flex;flex-wrap:wrap;gap:12px;opacity:0;animation:up .7s .65s both}
+.pill{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--soft);background:var(--glass);border:1px solid var(--line);padding:7px 14px;border-radius:40px}
+.pill .pi{color:var(--green);font-size:11px}
+
+/* hero right floating card */
+.hero-card{position:absolute;right:5%;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:16px;opacity:0;animation:left .8s .8s both}
+.hc-block{background:rgba(2,8,18,.75);backdrop-filter:blur(16px);border:1px solid var(--line2);border-right:3px solid var(--red);padding:16px 22px;border-radius:var(--r6)}
+.hc-num{font-family:var(--serif);font-size:38px;font-weight:700;color:var(--white);line-height:1;display:block}
+.hc-label{font-size:11px;color:var(--soft);letter-spacing:.3px}
+
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes left{from{opacity:0;transform:translateX(22px) translateY(-50%)}to{opacity:1;transform:translateX(0) translateY(-50%)}}
+
+.scroll-bar{position:absolute;bottom:32px;left:5%;z-index:2;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--faint);text-transform:uppercase}
+.sb-line{width:36px;height:1px;background:var(--faint);overflow:hidden}
+.sb-line::after{content:'';display:block;width:100%;height:100%;background:var(--red);animation:slide 2s infinite}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+/* ══ PROOF BAR ══ */
+.proof{background:var(--navy);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 5%;display:flex;justify-content:center;gap:0;flex-wrap:wrap}
+.proof-item{text-align:center;padding:12px 40px;border-right:1px solid var(--line)}
+.proof-item:last-child{border-right:none}
+.proof-num{font-family:var(--serif);font-size:36px;font-weight:700;color:var(--white);line-height:1;display:block}
+.proof-lbl{font-size:11.5px;color:var(--soft);letter-spacing:.3px;margin-top:4px}
+
+/* ══ SECTION BASE ══ */
+section{padding:104px 5%}
+.sec-eye{font-family:var(--mono);font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-eye::before{content:'';width:20px;height:1px;background:var(--red)}
+.sec-h{font-family:var(--serif);font-size:clamp(38px,5vw,62px);font-weight:700;line-height:1.03;color:var(--white)}
+.sec-h i{color:var(--red);font-style:italic}
+
+/* ══ PROBLEM ══ */
+.problem{background:linear-gradient(180deg,var(--ink) 0%,var(--navy) 100%)}
+
+.prob-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;margin-top:64px;align-items:start}
+
+.prob-cards{display:flex;flex-direction:column;gap:16px}
+.pc{display:flex;gap:18px;background:var(--glass);border:1px solid var(--line);border-radius:var(--r8);padding:22px 24px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .25s}
+.pc:hover{border-color:rgba(220,53,69,.2);transform:translateX(4px)}
+.pc:hover::before{background:var(--red)}
+.pc-ico{font-size:22px;width:44px;height:44px;border-radius:var(--r6);background:rgba(220,53,69,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.pc p{font-size:13px;color:var(--soft);line-height:1.65}
+
+.prob-right{position:sticky;top:90px}
+.prob-img{border-radius:var(--r8);overflow:hidden;margin-bottom:24px;position:relative}
+.prob-img img{width:100%;height:320px;object-fit:cover;display:block;filter:brightness(.65) saturate(.75)}
+.prob-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(2,8,18,.85) 100%)}
+.prob-caption{position:absolute;bottom:18px;left:18px;right:18px;z-index:1;font-size:12px;font-style:italic;color:rgba(255,255,255,.55)}
+
+.quote-card{background:var(--glass);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:0 var(--r8) var(--r8) 0;padding:28px 30px}
+.quote-card blockquote{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--white);line-height:1.45;margin-bottom:12px}
+.quote-card cite{font-size:12px;color:var(--soft)}
+
+/* ══ WHY FAIL ══ */
+.fail{background:var(--navy)}
+.fail-inner{max-width:580px;margin-bottom:56px}
+.fail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:var(--r8);overflow:hidden}
+.fi{background:var(--panel);padding:32px 28px;position:relative}
+.fi::before{content:attr(data-n);font-family:var(--serif);font-size:88px;font-weight:700;color:rgba(220,53,69,.05);position:absolute;bottom:10px;right:14px;line-height:1}
+.fi-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.18);padding:3px 9px;border-radius:2px;display:inline-block;margin-bottom:18px}
+.fi-x{width:34px;height:34px;border-radius:50%;background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.22);display:flex;align-items:center;justify-content:center;color:var(--red);font-size:13px;font-weight:900;margin-bottom:18px}
+.fi h3{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2}
+.fi p{font-size:13.5px;color:var(--soft);line-height:1.7}
+
+/* ══ SYSTEM ══ */
+.system{background:linear-gradient(180deg,var(--navy) 0%,var(--deep) 100%)}
+.sys-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:72px;align-items:center}
+
+.sys-imgbox{position:relative}
+.sys-img-main{width:100%;height:440px;object-fit:cover;border-radius:var(--r8);display:block;filter:brightness(.7) saturate(.7)}
+.sys-img-sub{position:absolute;bottom:-24px;right:-24px;width:190px;border-radius:var(--r6);overflow:hidden;border:3px solid var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.sys-img-sub img{width:100%;height:130px;object-fit:cover;display:block;filter:brightness(.75)}
+.sys-badge{position:absolute;top:20px;left:20px;background:rgba(2,8,18,.8);backdrop-filter:blur(12px);border:1px solid var(--line2);border-radius:var(--r6);padding:12px 16px}
+.sys-badge b{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--red);display:block;line-height:1}
+.sys-badge small{font-size:11px;color:var(--soft)}
+
+.steps{display:flex;flex-direction:column;gap:28px;margin-top:40px}
+.step{display:flex;gap:18px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:none;padding-bottom:0}
+.step-n{width:36px;height:36px;border-radius:50%;background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.22);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;color:var(--red);flex-shrink:0}
+.step h4{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px}
+.step p{font-size:13.5px;color:var(--soft);line-height:1.65}
+
+/* ══ EBOOKS ══ */
+.ebooks{background:var(--deep)}
+.ebooks-head{text-align:center;margin-bottom:64px}
+.ebooks-head p{font-size:15px;color:var(--soft);margin:14px auto 0;max-width:480px}
+
+.eb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+.eb{background:var(--glass);border:1px solid var(--line);border-radius:var(--r8);overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
+.eb:hover{transform:translateY(-6px);border-color:rgba(220,53,69,.25);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.eb-cover{position:relative;height:190px;overflow:hidden}
+.eb-cover img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6) saturate(.65);transition:transform .4s}
+.eb:hover .eb-cover img{transform:scale(1.05)}
+.eb-cov-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 25%,rgba(2,8,18,.9) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.eb-type{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);background:rgba(212,160,23,.12);border:1px solid rgba(212,160,23,.22);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:7px}
+.eb-title{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--white);line-height:1.2}
+.eb-body{padding:20px 22px}
+.eb-desc{font-size:13px;color:var(--soft);line-height:1.65;margin-bottom:14px}
+.eb-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.3px;padding:3px 9px;border-radius:2px}
+.tag-r{background:rgba(220,53,69,.08);color:#fc8181;border:1px solid rgba(220,53,69,.18)}
+.tag-g{background:var(--green-d);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.tag-a{background:var(--amber-d);color:var(--amber);border:1px solid rgba(212,160,23,.2)}
+.eb-pkg{text-align:right;margin-top:12px;font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.5px}
+
+/* ══ PRICING ══ */
+.pricing{background:linear-gradient(180deg,var(--deep) 0%,var(--navy) 100%);position:relative;overflow:hidden}
+.pricing::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(220,53,69,.05) 0%,transparent 70%);top:-300px;right:-200px;pointer-events:none}
+
+.pricing-head{text-align:center;margin-bottom:64px}
+.pricing-head p{font-size:15px;color:var(--soft);margin-top:14px;max-width:460px;margin-left:auto;margin-right:auto}
+
+.px-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1060px;margin:0 auto 44px}
+
+.px-wrap{position:relative}
+.px-pop{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--red);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 18px;border-radius:2px;z-index:2;box-shadow:0 4px 16px rgba(220,53,69,.4)}
+
+.px{background:var(--glass);border:1px solid var(--line);border-radius:var(--r8);overflow:hidden;transition:transform .3s,box-shadow .3s}
+.px.featured{border-color:rgba(220,53,69,.5);transform:translateY(-6px) scale(1.02)}
+.px.featured::before{content:'';position:absolute;inset:-1px;border-radius:var(--r8);background:linear-gradient(135deg,rgba(220,53,69,.4),transparent 40%,transparent 60%,rgba(220,53,69,.2));z-index:-1}
+.px:hover{box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.px.featured:hover{transform:translateY(-10px) scale(1.02)}
+.px-relative{position:relative}
+
+/* animated border on featured */
+@keyframes borderRot{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+
+.px-head{padding:30px 26px 24px;border-bottom:1px solid var(--line)}
+.px-tier{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-bottom:8px}
+.px-name{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--white);margin-bottom:18px}
+.px-price{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.px-rm{font-family:var(--serif);font-size:54px;font-weight:700;color:var(--white);line-height:1}
+.px-was{font-size:18px;color:var(--faint);text-decoration:line-through}
+.px-note{font-size:11.5px;color:var(--soft)}
+
+.px-body{padding:26px}
+.px-items{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.px-row{display:flex;gap:10px;font-size:13.5px;color:var(--text);align-items:flex-start}
+.px-chk{color:var(--green);font-size:12px;margin-top:2px;flex-shrink:0}
+.px-row.dim{opacity:.32}
+.px-row.dim .px-chk{color:var(--faint)}
+.px-bonus{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-left:5px;vertical-align:middle}
+.bn-g{background:rgba(212,160,23,.1);color:var(--amber);border:1px solid rgba(212,160,23,.2)}
+.bn-b{background:rgba(14,165,233,.1);color:var(--teal);border:1px solid rgba(14,165,233,.2)}
+
+.btn-px{width:100%;padding:15px;border-radius:var(--r3);font-weight:700;font-size:14px;cursor:pointer;font-family:var(--sans);transition:all .2s;border:none;letter-spacing:.3px}
+.btn-px-r{background:var(--red);color:#fff}
+.btn-px-r:hover{background:var(--red-h);box-shadow:0 8px 24px rgba(220,53,69,.3)}
+.btn-px-o{background:transparent;color:var(--text);border:1px solid var(--line2)}
+.btn-px-o:hover{border-color:var(--soft)}
+.px-save{text-align:center;margin-top:11px;font-family:var(--mono);font-size:11px;letter-spacing:.4px;color:var(--green)}
+
+/* countdown */
+.cd-wrap{max-width:500px;margin:0 auto;background:rgba(220,53,69,.06);border:1px solid rgba(220,53,69,.16);border-radius:var(--r8);padding:22px 28px;text-align:center}
+.cd-lbl{font-size:12px;color:var(--soft);margin-bottom:14px;letter-spacing:.3px}
+.cd-row{display:flex;justify-content:center;align-items:center;gap:8px}
+.cd-u{text-align:center;min-width:62px}
+.cd-n{font-family:var(--serif);font-size:42px;font-weight:700;color:var(--red);line-height:1;display:block}
+.cd-t{font-family:var(--mono);font-size:9px;color:var(--soft);letter-spacing:1.5px;text-transform:uppercase}
+.cd-sep{font-size:30px;color:var(--faint);padding-bottom:14px}
+
+/* ══ TESTIMONIALS ══ */
+.testi{background:var(--navy)}
+.testi-head{max-width:580px;margin-bottom:64px}
+.testi-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+.testi-big{background:var(--glass);border:1px solid var(--line);border-radius:var(--r8);overflow:hidden}
+.testi-big-img{width:100%;height:250px;object-fit:cover;display:block;filter:brightness(.6) saturate(.6)}
+.testi-big-body{padding:32px 32px 28px}
+.t-stars{color:var(--amber);font-size:13px;letter-spacing:3px;margin-bottom:18px}
+.testi-q{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--white);line-height:1.5;margin-bottom:20px}
+.t-result{display:inline-flex;align-items:center;gap:7px;background:var(--green-d);border:1px solid rgba(16,185,129,.22);color:var(--green);font-family:var(--mono);font-size:11px;letter-spacing:.3px;padding:5px 13px;border-radius:2px}
+.t-author-row{margin-top:18px;display:flex;justify-content:space-between;align-items:center}
+.t-author{font-size:13px;color:var(--soft)}
+.t-author b{color:var(--text);display:block;font-size:14px}
+.t-pkg{font-size:11px;color:var(--faint);font-family:var(--mono)}
+
+.testi-sm-stack{display:flex;flex-direction:column;gap:18px}
+.t-sm{background:var(--glass);border:1px solid var(--line);border-radius:var(--r8);padding:22px 24px;transition:border-color .2s}
+.t-sm:hover{border-color:rgba(220,53,69,.18)}
+.t-sm-stars{color:var(--amber);font-size:11px;letter-spacing:2px;margin-bottom:11px}
+.t-sm-q{font-size:13.5px;color:var(--text);line-height:1.6;margin-bottom:12px;font-style:italic}
+.t-sm-res{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.3px}
+.t-sm-who{margin-top:11px;font-size:12px;color:var(--soft)}
+.t-sm-who b{color:var(--text)}
+
+/* ══ GUARANTEE ══ */
+.guarantee{background:linear-gradient(180deg,var(--navy) 0%,var(--deep) 100%)}
+.guar-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:960px;margin:0 auto}
+.g-img{position:relative}
+.g-photo{width:100%;height:360px;object-fit:cover;border-radius:var(--r8);display:block;filter:brightness(.6) saturate(.55)}
+.g-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;border-radius:50%;border:3px solid var(--green);background:rgba(2,8,18,.88);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(16,185,129,.2)}
+.g-stamp b{font-family:var(--serif);font-size:40px;font-weight:700;color:var(--green);line-height:1}
+.g-stamp small{font-size:9.5px;color:var(--green);letter-spacing:1px;text-align:center;line-height:1.4}
+.g-text h2{font-family:var(--serif);font-size:40px;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:18px}
+.g-text p{font-size:14.5px;color:var(--soft);line-height:1.8;margin-bottom:16px}
+.g-list{display:flex;flex-direction:column;gap:9px}
+.g-li{display:flex;gap:11px;font-size:14px;color:var(--text)}
+.g-li::before{content:'✓';color:var(--green);flex-shrink:0;margin-top:1px}
+
+/* ══ FAQ ══ */
+.faq{background:var(--deep)}
+.faq-lay{display:grid;grid-template-columns:.38fr .62fr;gap:72px;align-items:start}
+.faq-left{position:sticky;top:90px}
+.faq-left p{font-size:14px;color:var(--soft);margin-top:16px;line-height:1.75}
+.faq-list{display:flex;flex-direction:column}
+.fq{border-bottom:1px solid var(--line);cursor:pointer}
+.fq-q{padding:21px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:15px;font-weight:600;color:var(--soft);transition:color .2s}
+.fq:hover .fq-q{color:var(--white)}
+.fq-arr{font-size:18px;color:var(--red);transition:transform .25s;flex-shrink:0}
+.fq.open .fq-arr{transform:rotate(45deg)}
+.fq-a{font-size:13.5px;color:var(--soft);line-height:1.78;padding-bottom:20px;display:none}
+.fq.open .fq-a{display:block}
+
+/* ══ FINAL CTA ══ */
+.final{position:relative;overflow:hidden;padding:140px 5%;text-align:center}
+.final-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;filter:brightness(.18) saturate(.3)}
+.final-overlay{position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,rgba(2,8,18,.75) 30%,rgba(2,8,18,.75) 70%,var(--ink) 100%)}
+.final-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(220,53,69,.12) 0%,transparent 65%)}
+.final-inner{position:relative;z-index:2;max-width:700px;margin:0 auto}
+.final-inner h2{font-family:var(--serif);font-size:clamp(46px,7vw,82px);font-weight:700;color:var(--white);line-height:.96;margin-bottom:22px}
+.final-inner h2 i{color:var(--red);font-style:italic}
+.final-inner p{font-size:16px;color:var(--soft);max-width:460px;margin:0 auto 48px;line-height:1.8}
+.final-note{margin-top:24px;font-size:12px;color:var(--faint)}
+.final-note a{color:var(--soft);text-decoration:none;cursor:pointer;transition:color .2s}
+.final-note a:hover{color:var(--text)}
+
+/* ══ FOOTER ══ */
+footer{background:var(--navy);border-top:1px solid var(--line);padding:52px 5% 32px}
+.ft-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:52px;margin-bottom:44px}
+.ft-brand .logo{font-size:20px}
+.ft-brand p{font-size:13px;color:var(--soft);margin-top:12px;line-height:1.7;max-width:280px}
+.ft-col h5{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-bottom:18px}
+.ft-col a{display:block;font-size:13.5px;color:var(--soft);text-decoration:none;margin-bottom:9px;transition:color .2s;cursor:pointer}
+.ft-col a:hover{color:var(--text)}
+.ft-bot{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-copy{font-size:11.5px;color:var(--faint);line-height:1.6}
+.ft-legal{display:flex;gap:18px}
+.ft-legal a{font-size:11.5px;color:var(--faint);text-decoration:none;cursor:pointer;transition:color .2s}
+.ft-legal a:hover{color:var(--soft)}
+
+/* ══ STICKY CTA ══ */
+.sticky-cta{position:fixed;bottom:20px;right:20px;z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+.sticky-cta.show{opacity:1;transform:translateY(0);pointer-events:all}
+.sticky-btn{display:flex;align-items:center;gap:9px;background:var(--red);color:#fff;padding:13px 22px;border-radius:var(--r6);font-weight:700;font-size:13.5px;text-decoration:none;box-shadow:0 8px 28px rgba(220,53,69,.4);transition:background .2s}
+.sticky-btn:hover{background:var(--red-h)}
+.s-price{background:rgba(255,255,255,.15);padding:2px 8px;border-radius:2px;font-size:12px}
+
+/* ══ ORDER MODAL ══ */
+.o-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:800;align-items:center;justify-content:center;padding:16px}
+.o-overlay.show{display:flex}
+.o-box{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r12);padding:40px;max-width:440px;width:100%;position:relative;animation:mIn .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes mIn{from{opacity:0;transform:scale(.93) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.o-x{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--soft);font-size:22px;cursor:pointer;transition:color .2s}
+.o-x:hover{color:var(--text)}
+.o-pkg{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.o-name{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--white);margin-bottom:4px}
+.o-price{font-family:var(--serif);font-size:48px;font-weight:700;color:var(--white);line-height:1;margin-bottom:26px}
+.o-price sub{font-size:20px;color:var(--soft)}
+.frm-row{margin-bottom:13px}
+.frm-row label{display:block;font-size:12px;color:var(--soft);margin-bottom:6px;letter-spacing:.3px}
+.frm-row input{width:100%;padding:13px 15px;background:var(--deep);border:1px solid var(--line2);border-radius:var(--r3);color:var(--text);font-family:var(--sans);font-size:14.5px;outline:none;transition:border-color .2s}
+.frm-row input:focus{border-color:rgba(220,53,69,.5)}
+.frm-row input::placeholder{color:var(--faint)}
+.frm-sub{width:100%;padding:16px;background:var(--red);color:#fff;border:none;border-radius:var(--r3);font-weight:800;font-size:15px;cursor:pointer;font-family:var(--sans);margin-top:6px;transition:background .2s;letter-spacing:.3px}
+.frm-sub:hover{background:var(--red-h)}
+.frm-note{font-size:11px;color:var(--faint);text-align:center;margin-top:12px;line-height:1.55}
+
+/* ══ LEGAL DRAWER ══ */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:900}
+.drawer-overlay.open{display:block}
+.drawer{position:fixed;top:0;right:-100%;bottom:0;width:min(720px,100%);background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;z-index:901;transition:right .4s cubic-bezier(.4,0,.2,1)}
+.drawer.open{right:0}
+.drawer-head{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 32px;display:flex;justify-content:space-between;align-items:center;z-index:1}
+.drawer-head h2{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white)}
+.drawer-close{background:none;border:none;color:var(--soft);font-size:24px;cursor:pointer;transition:color .2s;line-height:1}
+.drawer-close:hover{color:var(--text)}
+.drawer-meta{padding:16px 32px 0;font-size:11.5px;color:var(--faint);display:flex;gap:16px;flex-wrap:wrap}
+.drawer-body{padding:32px}
+
+/* LEGAL STYLES IN DRAWER */
+.leg-section{margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid var(--line)}
+.leg-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.leg-num{font-family:var(--mono);font-size:9.5px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:8px}
+.leg-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white);margin-bottom:18px;line-height:1.2}
+.leg-body p{font-size:13.5px;color:var(--soft);margin-bottom:14px;line-height:1.8}
+.leg-body p b{color:var(--text)}
+.leg-body ul,.leg-body ol{padding-left:18px;margin-bottom:14px}
+.leg-body li{font-size:13.5px;color:var(--soft);margin-bottom:7px;line-height:1.75}
+.leg-body li b{color:var(--text)}
+.la-ref{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.3px;background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.18);color:#fc8181;padding:1px 7px;border-radius:2px;margin:0 2px}
+.l-warn{background:rgba(220,53,69,.06);border:1px solid rgba(220,53,69,.16);border-left:3px solid var(--red);padding:16px 20px;border-radius:0 var(--r6) var(--r6) 0;margin:16px 0}
+.l-warn p{font-size:13px;color:var(--soft);margin:0}
+.l-warn p b{color:var(--text)}
+.l-info{background:rgba(212,160,23,.05);border:1px solid rgba(212,160,23,.15);border-left:3px solid var(--amber);padding:16px 20px;border-radius:0 var(--r6) var(--r6) 0;margin:16px 0}
+.l-info p{font-size:13px;color:var(--soft);margin:0}
+.l-info p b{color:var(--text)}
+.l-green{background:var(--green-d);border:1px solid rgba(16,185,129,.18);border-left:3px solid var(--green);padding:16px 20px;border-radius:0 var(--r6) var(--r6) 0;margin:16px 0}
+.l-green p{font-size:13px;color:var(--soft);margin:0}
+.l-green p b{color:var(--text)}
+.l-contact{background:var(--deep);border:1px solid var(--line);border-radius:var(--r6);padding:24px 28px;margin-top:16px}
+.l-contact h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px}
+.l-contact p{font-size:13px;color:var(--soft);margin-bottom:7px}
+.l-contact a{color:var(--red);text-decoration:none}
+.refund-tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:12.5px}
+.refund-tbl th{background:rgba(255,255,255,.04);color:var(--text);padding:10px 13px;text-align:left;border:1px solid var(--line);font-family:var(--mono);font-size:9.5px;letter-spacing:.5px;text-transform:uppercase}
+.refund-tbl td{padding:10px 13px;border:1px solid var(--line);color:var(--soft);vertical-align:top}
+.t-ok{color:var(--green);font-weight:700}
+.t-no{color:#fc8181;font-weight:700}
+
+/* ══ SCROLL REVEAL ══ */
+.r{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.r.v{opacity:1;transform:translateY(0)}
+.r.d1{transition-delay:.1s}.r.d2{transition-delay:.2s}.r.d3{transition-delay:.3s}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .hero-card{display:none}
+  .prob-grid,.sys-grid,.guar-inner,.testi-layout,.faq-lay{grid-template-columns:1fr;gap:48px}
+  .px-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto 44px}
+  .px.featured{transform:none}
+  .px.featured:hover{transform:translateY(-4px)}
+  .eb-grid{grid-template-columns:1fr 1fr}
+  .ft-top{grid-template-columns:1fr 1fr}
+  .prob-right{position:static}
+  .faq-left{position:static}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .fail-grid{grid-template-columns:1fr}
+  .eb-grid{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr}
+  .proof-item{padding:12px 20px}
+  .drawer{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE -->
+<div class="announce">⚡ TAWARAN PEMBELI AWAL — Harga naik selepas 100 pembeli pertama <em>| Akses digital segera selepas bayar</em></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Bebas<s>Ceti</s>.my</div>
+  <div class="nav-r">
+    <div class="nav-links">
+      <a href="#kandungan">Kandungan</a>
+      <a href="#pakej">Pakej</a>
+      <a href="#testimoni">Testimoni</a>
+      <a onclick="openDrawer('privacy')" style="cursor:pointer">Privasi</a>
+      <a onclick="openDrawer('terms')" style="cursor:pointer">Terma</a>
+    </div>
+    <a href="#pakej" class="nav-cta">DAPATKAN SEKARANG</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero dot-bg">
+  <div class="hero-photo" id="hp"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="badge-pill"><span></span>Sistem Pengurusan Krisis Ahlong</div>
+    <h1>Anda Mampu<i>Lawan Sendiri.</i></h1>
+    <p class="hero-lead">Hentikan ugutan. Lindungi keluarga. Rampas semula kawalan hidup anda — <b>tanpa peguam, tanpa perunding, tanpa lari bersembunyi.</b></p>
+    <div class="hero-checks">
+      <div class="hck"><div class="hck-dot">✓</div>6 dokumen taktikal & panduan lengkap siap guna</div>
+      <div class="hck"><div class="hck-dot">✓</div>Template laporan polis + aduan JIPS & EAIC rasmi</div>
+      <div class="hck"><div class="hck-dot">✓</div>Protokol 3F — matikan eskalasi dalam 24 jam pertama</div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#pakej" class="btn-main">LIHAT PAKEJ & HARGA →</a>
+      <a href="#kandungan" class="btn-ghost-sm">Apa yang ada dalam pakej? ↓</a>
+    </div>
+    <div class="hero-pills">
+      <div class="pill"><span class="pi">✓</span> Jaminan Wang Kembali 7 Hari</div>
+      <div class="pill"><span class="pi">🔒</span> Bayar Selamat — ToyyibPay</div>
+      <div class="pill"><span class="pi">⚡</span> Akses Digital Segera</div>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hc-block"><b class="hc-num" data-count="3000">0</b><span class="hc-label">mangsa dibantu</span></div>
+    <div class="hc-block"><b class="hc-num">6</b><span class="hc-label">dokumen lengkap</span></div>
+    <div class="hc-block"><b class="hc-num">80%</b><span class="hc-label">kurang gangguan dalam 72 jam</span></div>
+  </div>
+
+  <div class="scroll-bar"><span>Tatal ke bawah</span><div class="sb-line"></div></div>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof">
+  <div class="proof-item"><span class="proof-num">3,000+</span><div class="proof-lbl">Mangsa Dibantu</div></div>
+  <div class="proof-item"><span class="proof-num">6</span><div class="proof-lbl">Dokumen Lengkap</div></div>
+  <div class="proof-item"><span class="proof-num">80%</span><div class="proof-lbl">Kurang Gangguan Dalam 72 Jam</div></div>
+  <div class="proof-item"><span class="proof-num">7</span><div class="proof-lbl">Hari Jaminan Pulang Wang</div></div>
+</div>
+
+<!-- ═══════════════ PROBLEM ═══════════════ -->
+<section class="problem">
+  <div class="sec-eye">Realiti Yang Anda Hadapi</div>
+  <h2 class="sec-h r">Ini Bukan Sekadar<br><i>Masalah Hutang.</i></h2>
+  <div class="prob-grid">
+    <div class="prob-cards">
+      <div class="pc r d1"><div class="pc-ico">📱</div><div><h4>Telefon Tidak Berhenti Berdering</h4><p>WhatsApp dipenuhi ugutan. Gambar peribadi diedit dan disebarkan. Nombor baru muncul setiap jam untuk pastikan anda tidak pernah dapat rehat.</p></div></div>
+      <div class="pc r d2"><div class="pc-ico">👨‍👩‍👧</div><div><h4>Keluarga & Majikan Dijadikan Senjata</h4><p>Mereka hubungi ibu bapa, pasangan, rakan sekerja. Ugut datang ke tempat kerja — semua untuk pastikan anda kekal dalam ketakutan.</p></div></div>
+      <div class="pc r d3"><div class="pc-ico">🧠</div><div><h4>Perang Psikologi Yang Dirancang</h4><p>Ini bukan sekadar kutip hutang. Ini sistem fear-based collection — direka khas untuk pecahkan mental anda dari dalam supaya anda bayar tanpa berfikir.</p></div></div>
+      <div class="pc r"><div class="pc-ico">📈</div><div><h4>Hutang Yang Direka Untuk Tidak Habis</h4><p>Compound interest 20–50% seminggu. RM1,000 boleh jadi lebih RM10,000. Matlamat mereka bukan selesaikan hutang — tapi perah anda seumur hidup.</p></div></div>
+    </div>
+    <div class="prob-right r">
+      <div class="prob-img">
+        <img src="https://images.unsplash.com/photo-1586473219010-2ffc57b0d282?w=700&q=80&auto=format&fit=crop" alt="Tekanan ugutan ahlong">
+        <div class="prob-caption">"Setiap hari diisi dengan rasa takut. Tidur pun sudah tidak lena."</div>
+      </div>
+      <div class="quote-card">
+        <blockquote>"Along tahu satu benda — orang yang takut mudah dikawal. Semua tindakan mereka bermula dari situ."</blockquote>
+        <cite>— Petikan dari Ebook Bebas Ceti</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ WHY FAIL ═══════════════ -->
+<section class="fail line-bg">
+  <div class="fail-inner">
+    <div class="sec-eye">Kenapa Tindakan Biasa Gagal</div>
+    <h2 class="sec-h r">3 Kesilapan Fatal<br>Yang Menambah Tekanan</h2>
+  </div>
+  <div class="fail-grid r">
+    <div class="fi" data-n="01"><div class="fi-tag">Kesilapan #1</div><div class="fi-x">✕</div><h3>Block Nombor Mereka</h3><p>Mereka terus eskalate kepada majikan dan ahli keluarga. Block satu nombor, lima nombor baru muncul. Tindakan ini hanya memberi mereka justifikasi untuk intensifkan tekanan.</p></div>
+    <div class="fi" data-n="02"><div class="fi-tag">Kesilapan #2</div><div class="fi-x">✕</div><h3>Bayar Kerana Takut</h3><p>Caj penalti tersembunyi dicipta setiap kali bayaran dibuat. Hutang direka untuk tidak habis. Setiap bayaran mengesahkan bahawa taktik ketakutan mereka berkesan.</p></div>
+    <div class="fi" data-n="03"><div class="fi-tag">Kesilapan #3</div><div class="fi-x">✕</div><h3>Lari & Bersembunyi</h3><p>Reputasi profesional hancur kerana mereka terus hubungi tempat kerja. Masalah tidak selesai — ia hanya bertambah besar dengan setiap hari yang berlalu.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════ SYSTEM ═══════════════ -->
+<section class="system" id="kandungan">
+  <div class="sys-grid">
+    <div class="sys-imgbox r">
+      <img class="sys-img-main" src="https://images.unsplash.com/photo-1568667256549-094345857637?w=700&q=80&auto=format&fit=crop" alt="Dokumen rasmi">
+      <div class="sys-img-sub"><img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80&auto=format&fit=crop" alt="Laporan polis"></div>
+      <div class="sys-badge"><b>6</b><small>Dokumen<br>Lengkap</small></div>
+    </div>
+    <div>
+      <div class="sec-eye">Sistem Tindakan</div>
+      <h2 class="sec-h r">Dari Panik<br>Kepada <i>Protokol.</i></h2>
+      <div class="steps r">
+        <div class="step"><div class="step-n">F1</div><div><h4>FILTER — Rampas Semula Kawalan Komunikasi</h4><p>Teknik mengunci dan menapis aliran komunikasi untuk mengurangkan leverage ahlong secara drastik. Anda kawal siapa, bila, dan bagaimana mereka menghubungi anda.</p></div></div>
+        <div class="step"><div class="step-n">F2</div><div><h4>FRAME — Kawal Naratif & Persepsi</h4><p>Ubah posisi dari 'mangsa panik' kepada 'individu rasional yang menetapkan syarat'. Cara anda bercakap menentukan cara mereka bertindak balas.</p></div></div>
+        <div class="step"><div class="step-n">F3</div><div><h4>FREEZE — Hentikan Eskalasi Secara Taktikal</h4><p>Jawapan direka khas untuk meneutralkan ancaman tanpa provoke tindakan agresif — dilengkapi template dokumen rasmi untuk tekanan undang-undang.</p></div></div>
+        <div class="step"><div class="step-n">07</div><div><h4>Hierarki Aduan Penuh — Dari Polis hingga EAIC</h4><p>7 langkah dari laporan polis pertama, susulan, JIPS, EAIC, hingga KPKT — dengan template dokumen siap guna untuk setiap peringkat.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EBOOKS ═══════════════ -->
+<section class="ebooks dot-bg">
+  <div class="ebooks-head">
+    <div class="sec-eye" style="justify-content:center">6 Dokumen Dalam Pakej</div>
+    <h2 class="sec-h r">Arsenal Lengkap.<br>Siap Guna.</h2>
+    <p class="r">Bukan teori. Bukan panduan umum. Setiap dokumen direka untuk senario spesifik yang anda hadapi.</p>
+  </div>
+  <div class="eb-grid">
+    <div class="eb r d1">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">E-Book Utama</div><div class="eb-title">Panduan Praktikal Menghadapi Ugutan Ahlong</div></div></div>
+      <div class="eb-body"><p class="eb-desc">8 bab komprehensif — profil ahlong, sistem perangkap hutang, undang-undang, hingga pelan tindakan penuh. Panduan induk semuanya.</p><div class="eb-tags"><span class="tag tag-r">8 Bab</span><span class="tag tag-g">Panduan Induk</span></div><div class="eb-pkg">SEMUA PAKEJ</div></div>
+    </div>
+    <div class="eb r d2">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">Panduan Tindakan</div><div class="eb-title">Bangkit dari Tekanan — Sistem 7 Langkah</div></div></div>
+      <div class="eb-body"><p class="eb-desc">Panduan operasi langkah demi langkah: laporan polis → susulan → JIPS → EAIC → KPKT. Termasuk nombor hotline rasmi setiap agensi.</p><div class="eb-tags"><span class="tag tag-a">7 Langkah</span><span class="tag tag-g">Hotline Rasmi</span></div><div class="eb-pkg">SEMUA PAKEJ</div></div>
+    </div>
+    <div class="eb r d3">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">Protokol Komunikasi</div><div class="eb-title">Protokol 3F: Filter, Frame & Freeze</div></div></div>
+      <div class="eb-body"><p class="eb-desc">Sistem psikologi taktikal untuk matikan leverage ahlong. Skrip siap guna, 7 template WhatsApp reply, cara kawal naratif.</p><div class="eb-tags"><span class="tag tag-r">7 Skrip</span><span class="tag tag-a">Taktikal</span></div><div class="eb-pkg">PAKEJ TINDAK + KOMANDO</div></div>
+    </div>
+    <div class="eb r d1">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">Template Dokumen</div><div class="eb-title">Laporan Polis Pertama & Susulan</div></div></div>
+      <div class="eb-body"><p class="eb-desc">Draf profesional merangkumi Seksyen 503/506 Kanun Keseksaan, Akta Komunikasi 1998, dan Akta Pemberi Pinjam Wang 1951. Isi nama dan hantar.</p><div class="eb-tags"><span class="tag tag-g">Siap Isi</span><span class="tag tag-r">2 Template</span></div><div class="eb-pkg">PAKEJ TINDAK + KOMANDO</div></div>
+    </div>
+    <div class="eb r d2">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">Template Dokumen</div><div class="eb-title">Aduan Rasmi JIPS (PDRM)</div></div></div>
+      <div class="eb-body"><p class="eb-desc">Surat aduan formal kepada Jabatan Integriti dan Pematuhan Standard apabila polis tidak bertindak. Mewujudkan tekanan rekod dalam sistem PDRM.</p><div class="eb-tags"><span class="tag tag-a">Rasmi</span><span class="tag tag-g">Tekanan Sistem</span></div><div class="eb-pkg">PAKEJ KOMANDO SAHAJA</div></div>
+    </div>
+    <div class="eb r d3">
+      <div class="eb-cover"><img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&auto=format&fit=crop" alt=""><div class="eb-cov-overlay"><div class="eb-type">Template Dokumen</div><div class="eb-title">Aduan Rasmi EAIC (Tertinggi)</div></div></div>
+      <div class="eb-body"><p class="eb-desc">Suruhanjaya Integriti Agensi Penguatkuasaan — hierarki tertinggi. Apabila EAIC terima aduan, polis dipanggil memberi penjelasan rasmi.</p><div class="eb-tags"><span class="tag tag-r">Hierarki Tertinggi</span><span class="tag tag-a">Eksklusif</span></div><div class="eb-pkg">PAKEJ KOMANDO SAHAJA</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section class="pricing" id="pakej">
+  <div class="pricing-head">
+    <div class="sec-eye" style="justify-content:center">Pilih Pakej Anda</div>
+    <h2 class="sec-h r">Satu Arsenal.<br>Tiga Peringkat.</h2>
+    <p>Dari panduan asas hingga pakej dokumen penuh — pilih ikut keperluan semasa anda.</p>
+  </div>
+  <div class="px-grid">
+    <!-- T1 -->
+    <div class="px-wrap">
+      <div class="px r">
+        <div class="px-head"><div class="px-tier">Peringkat 01</div><div class="px-name">PAKEJ SEDAR</div><div class="px-price"><span class="px-rm">29</span><span class="px-was">RM97</span></div><div class="px-note">Akses digital terus ke e-mel selepas bayar</div></div>
+        <div class="px-body">
+          <div class="px-items">
+            <div class="px-row"><span class="px-chk">✓</span>E-book Utama Panduan Praktikal (8 Bab)</div>
+            <div class="px-row"><span class="px-chk">✓</span>Panduan Langkah-Langkah (7 Langkah)</div>
+            <div class="px-row dim"><span class="px-chk">—</span>Protokol 3F Komunikasi Taktikal</div>
+            <div class="px-row dim"><span class="px-chk">—</span>Template Laporan Polis</div>
+            <div class="px-row dim"><span class="px-chk">—</span>Template Aduan JIPS & EAIC</div>
+          </div>
+          <button class="btn-px btn-px-o" onclick="openOrder('PAKEJ SEDAR','29')">PILIH PAKEJ INI</button>
+        </div>
+      </div>
+    </div>
+    <!-- T2 FEATURED -->
+    <div class="px-wrap">
+      <div class="px-pop">PALING POPULAR</div>
+      <div class="px-relative">
+        <div class="px featured r">
+          <div class="px-head"><div class="px-tier">Peringkat 02</div><div class="px-name">PAKEJ TINDAK</div><div class="px-price"><span class="px-rm">59</span><span class="px-was">RM197</span></div><div class="px-note">Termasuk Protokol 3F + 2 Template Dokumen Rasmi</div></div>
+          <div class="px-body">
+            <div class="px-items">
+              <div class="px-row"><span class="px-chk">✓</span>E-book Utama (8 Bab) + Panduan 7 Langkah</div>
+              <div class="px-row"><span class="px-chk">✓</span>Protokol 3F: Filter, Frame & Freeze <span class="px-bonus bn-g">BONUS</span></div>
+              <div class="px-row"><span class="px-chk">✓</span>Template Laporan Polis Pertama</div>
+              <div class="px-row"><span class="px-chk">✓</span>Template Laporan Polis Susulan</div>
+              <div class="px-row dim"><span class="px-chk">—</span>Template Aduan JIPS & EAIC</div>
+            </div>
+            <button class="btn-px btn-px-r" onclick="openOrder('PAKEJ TINDAK','59')">PILIH PAKEJ INI</button>
+            <div class="px-save">✓ JIMAT RM138 dari harga biasa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- T3 -->
+    <div class="px-wrap">
+      <div class="px r">
+        <div class="px-head"><div class="px-tier">Peringkat 03</div><div class="px-name">PAKEJ KOMANDO</div><div class="px-price"><span class="px-rm">97</span><span class="px-was">RM297</span></div><div class="px-note">Arsenal penuh — semua 6 dokumen</div></div>
+        <div class="px-body">
+          <div class="px-items">
+            <div class="px-row"><span class="px-chk">✓</span>Semua item dalam Pakej Tindak</div>
+            <div class="px-row"><span class="px-chk">✓</span>Template Aduan Rasmi JIPS <span class="px-bonus bn-b">EKSKLUSIF</span></div>
+            <div class="px-row"><span class="px-chk">✓</span>Template Aduan Rasmi EAIC <span class="px-bonus bn-b">EKSKLUSIF</span></div>
+            <div class="px-row"><span class="px-chk">✓</span>Kemas kini dokumen percuma seumur hidup</div>
+          </div>
+          <button class="btn-px btn-px-o" onclick="openOrder('PAKEJ KOMANDO','97')">PILIH PAKEJ INI</button>
+          <div class="px-save" style="color:var(--amber)">✓ ARSENAL PENUH — Tiada yang tertinggal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- COUNTDOWN -->
+  <div class="cd-wrap r">
+    <div class="cd-lbl">— Harga pembeli awal tamat dalam —</div>
+    <div class="cd-row">
+      <div class="cd-u"><span class="cd-n" id="cdH">11</span><span class="cd-t">JAM</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-u"><span class="cd-n" id="cdM">47</span><span class="cd-t">MINIT</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-u"><span class="cd-n" id="cdS">33</span><span class="cd-t">SAAT</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section class="testi" id="testimoni">
+  <div class="testi-head">
+    <div class="sec-eye">Hasil Sebenar</div>
+    <h2 class="sec-h r">Mereka Sudah Keluar.<br>Anda Boleh Juga.</h2>
+  </div>
+  <div class="testi-layout">
+    <div class="testi-big r">
+      <img class="testi-big-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80&auto=format&fit=crop" alt="">
+      <div class="testi-big-body">
+        <div class="t-stars">★★★★★</div>
+        <p class="testi-q">"Selepas guna taktik Frame, saya berhenti balas ikut emosi. Masuk hari ke-3, panggilan dari nombor tidak dikenali berkurang hampir 80%. Saya mula dapat fokus semula pada perniagaan."</p>
+        <div class="t-result">✓ Gangguan berkurang 80% dalam 3 hari</div>
+        <div class="t-author-row">
+          <div class="t-author"><b>H.A.</b>Usahawan, Selangor</div>
+          <div class="t-pkg">Pakej Tindak</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-sm-stack">
+      <div class="t-sm r"><div class="t-sm-stars">★★★★★</div><p class="t-sm-q">"Mereka mula hubungi ofis saya. Skrip dalam panduan ni bantu saya tetapkan boundary yang tegas. Keadaan sekarang jauh lebih terkawal."</p><div class="t-sm-res">✓ Tempat kerja dilindungi dalam seminggu</div><div class="t-sm-who"><b>M.S.</b> · Eksekutif Korporat, KL</div></div>
+      <div class="t-sm r"><div class="t-sm-stars">★★★★★</div><p class="t-sm-q">"Dalam 3 hari ikut step dalam protokol ni, calls dah kurang separuh. Minggu kedua, keluarga dah tak kena ganggu. Kepala clear, tahu apa nak buat."</p><div class="t-sm-res">✓ Situasi terkawal penuh dalam 9 hari</div><div class="t-sm-who"><b>R.M.</b> · Pengurus Projek, JB</div></div>
+      <div class="t-sm r"><div class="t-sm-stars">★★★★★</div><p class="t-sm-q">"Template laporan polis yang diberikan sangat lengkap. IO balai terkejut sendiri sebab semua butiran undang-undang dah ada. Kes terus dibuka."</p><div class="t-sm-res">✓ Laporan diterima dan kes dibuka</div><div class="t-sm-who"><b>A.Z.</b> · Kakitangan Awam, Perak</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ GUARANTEE ═══════════════ -->
+<section class="guarantee">
+  <div class="guar-inner">
+    <div class="g-img r">
+      <img class="g-photo" src="https://images.unsplash.com/photo-1568234928966-359c35dd8327?w=700&q=80&auto=format&fit=crop" alt="">
+      <div class="g-stamp"><b>7</b><small>HARI<br>JAMINAN</small></div>
+    </div>
+    <div class="g-text r">
+      <div class="sec-eye">Jaminan Wang Kembali</div>
+      <h2>Tiada Risiko.<br>Tiada Soalan.</h2>
+      <p>Jika anda mengikuti sistem ini dan tidak melihat sebarang perubahan dalam 7 hari pertama, kami pulangkan wang anda sepenuhnya.</p>
+      <div class="g-list">
+        <div class="g-li">Tiada prosedur rumit atau soalan ditanya</div>
+        <div class="g-li">Refund penuh — tiada potongan</div>
+        <div class="g-li">Proses dalam 24 jam bekerja</div>
+        <div class="g-li">Hubungi melalui e-mel dengan nombor pesanan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section class="faq dot-bg">
+  <div class="faq-lay">
+    <div class="faq-left r">
+      <div class="sec-eye">FAQ</div>
+      <h2 class="sec-h">Soalan<br>Lazim</h2>
+      <p>Jawapan jelas untuk perkara yang sering ditanya sebelum membuat keputusan.</p>
+    </div>
+    <div class="faq-list r">
+      <div class="fq"><div class="fq-q">Adakah panduan ini akan melangsaikan hutang saya? <span class="fq-arr">+</span></div><div class="fq-a">Tidak. Kami tidak membuat janji palsu. Fokus sistem ini adalah pengurusan krisis — hentikan gangguan, matikan manipulasi psikologi, dan beri anda ruang bernafas untuk merancang penyelesaian kewangan dengan minda yang rasional.</div></div>
+      <div class="fq"><div class="fq-q">Berapa lama untuk nampak kesan? <span class="fq-arr">+</span></div><div class="fq-a">Pengguna yang mengikuti sistem dengan konsisten melaporkan pengurangan gangguan dalam 24–72 jam pertama. Kawalan penuh situasi biasanya dalam 7–14 hari bergantung kepada tahap keaktifan ahlong.</div></div>
+      <div class="fq"><div class="fq-q">Sesuai untuk pinjaman digital / apps? <span class="fq-arr">+</span></div><div class="fq-a">Ya. Panduan ini merangkumi along tradisional, along digital (WhatsApp/Telegram), pinjaman melalui apps, dan scam loan. Taktik mereka berbeza sedikit tapi prinsip asas fear-based collection adalah sama.</div></div>
+      <div class="fq"><div class="fq-q">Template dokumen ini untuk kes apa? <span class="fq-arr">+</span></div><div class="fq-a">Untuk kes ugutan jenayah oleh pemberi pinjaman wang tanpa lesen. Dokumen merangkumi laporan kepada PDRM (Seksyen 503/506 KK, Seksyen 233 AKM 1998), aduan kelewatan siasatan (JIPS), dan aduan badan pengawasan tertinggi (EAIC).</div></div>
+      <div class="fq"><div class="fq-q">Bagaimana terima fail selepas bayar? <span class="fq-arr">+</span></div><div class="fq-a">Link muat turun dihantar automatik ke e-mel anda dalam masa 5 minit selepas bayaran berjaya disahkan. Pembayaran diproses secara selamat melalui ToyyibPay (FPX / Kad Kredit / e-Wallet).</div></div>
+      <div class="fq"><div class="fq-q">Polis tidak bertindak atas laporan saya — apa buat? <span class="fq-arr">+</span></div><div class="fq-a">Ini adalah senario yang dicover dalam Pakej Tindak dan Pakej Komando. Template laporan polis susulan, aduan JIPS, dan aduan EAIC direka khas untuk senario ini. Aduan EAIC mewujudkan tekanan rekod rasmi yang memaksa polis memberi penjelasan.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FINAL CTA ═══════════════ -->
+<section class="final">
+  <div class="final-bg"></div>
+  <div class="final-overlay"></div>
+  <div class="final-inner">
+    <h2>Jangan Tunggu<br>Mereka <i>Eskalate.</i></h2>
+    <p>Setiap minit tanpa sistem adalah minit mereka ada kelebihan ke atas anda. Bertindak rasional sekarang.</p>
+    <a href="#pakej" class="btn-main" style="font-size:16px;padding:20px 44px;margin:0 auto">DAPATKAN PAKEJ SEKARANG →</a>
+    <div class="final-note">
+      Jaminan Wang Kembali 7 Hari &nbsp;·&nbsp; Akses Segera &nbsp;·&nbsp; Bayar Selamat via ToyyibPay
+      &nbsp;·&nbsp; <a onclick="openDrawer('privacy')">Dasar Privasi</a>
+      &nbsp;·&nbsp; <a onclick="openDrawer('terms')">Terma &amp; Syarat</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <div class="logo">Bebas<s>Ceti</s>.my</div>
+      <p>Platform pendidikan pengurusan krisis ahlong untuk rakyat Malaysia. Bukan pengganti nasihat guaman rasmi.</p>
+    </div>
+    <div class="ft-col">
+      <h5>Navigasi</h5>
+      <a href="#kandungan">Kandungan Pakej</a>
+      <a href="#pakej">Harga & Pakej</a>
+      <a href="#testimoni">Testimoni</a>
+    </div>
+    <div class="ft-col">
+      <h5>Undang-Undang</h5>
+      <a onclick="openDrawer('privacy')">Dasar Privasi</a>
+      <a onclick="openDrawer('terms')">Terma & Syarat</a>
+      <a href="mailto:support@bebasceti.my">Hubungi Kami</a>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <div class="ft-copy">© 2026 BebasCeti.my — Hak Cipta Terpelihara. Pembayaran diproses selamat melalui ToyyibPay. E-mel dihantar melalui Brevo.</div>
+    <div class="ft-legal">
+      <a onclick="openDrawer('privacy')">Dasar Privasi</a>
+      <a onclick="openDrawer('terms')">Terma & Syarat</a>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="sCta">
+  <a href="#pakej" class="sticky-btn">DAPATKAN SEKARANG <span class="s-price">dari RM29</span></a>
+</div>
+
+<!-- ═══════════════ ORDER MODAL ═══════════════ -->
+<div class="o-overlay" id="oModal">
+  <div class="o-box">
+    <button class="o-x" onclick="closeOrder()">×</button>
+    <div class="o-pkg" id="oPkg">PAKEJ TINDAK</div>
+    <div class="o-name" id="oName">PAKEJ TINDAK</div>
+    <div class="o-price"><sub>RM</sub><span id="oPrice">59</span></div>
+    <div class="frm-row"><label>Nama Panggilan</label><input type="text" id="fN" placeholder="Nama anda"></div>
+    <div class="frm-row"><label>Alamat E-mel</label><input type="email" id="fE" placeholder="email@anda.com"></div>
+    <div class="frm-row"><label>No. Telefon</label><input type="tel" id="fP" placeholder="01X-XXXXXXX"></div>
+    <button class="frm-sub" onclick="submitOrder()">TERUSKAN KE PEMBAYARAN →</button>
+    <p class="frm-note">🔒 Pembayaran selamat via ToyyibPay (FPX / Kad Kredit)<br>Link muat turun dihantar ke e-mel dalam 5 minit.</p>
+  </div>
+</div>
+
+<!-- ═══════════════ LEGAL DRAWERS ═══════════════ -->
+<div class="drawer-overlay" id="dOverlay" onclick="closeDrawer()"></div>
+
+<!-- PRIVACY DRAWER -->
+<div class="drawer" id="dPrivacy">
+  <div class="drawer-head">
+    <h2>Dasar Privasi</h2>
+    <button class="drawer-close" onclick="closeDrawer()">×</button>
+  </div>
+  <div class="drawer-meta">
+    <span>📅 Kuat Kuasa: 1 Januari 2026</span>
+    <span>🔄 Dikemas kini: 1 Mei 2026</span>
+    <span>⚖️ Di bawah PDPA 2010</span>
+  </div>
+  <div class="drawer-body">
+
+    <div class="l-info" style="margin-bottom:32px"><p><b>Nota Penting:</b> Dasar Privasi ini menerangkan cara BebasCeti.my mengumpul, menggunakan, menyimpan, dan melindungi data peribadi anda selaras dengan <span class="la-ref">Akta Perlindungan Data Peribadi 2010 (PDPA)</span> Malaysia. Dengan menggunakan laman web ini atau membuat pembelian, anda bersetuju dengan terma dalam Dasar Privasi ini.</p></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 01</div><h3 class="leg-title">Maklumat Pengawal Data</h3><div class="leg-body"><p>Pengawal data bagi laman web ini adalah <b>BebasCeti.my</b>, pengendali platform pendidikan digital berkaitan pengurusan krisis pinjaman wang haram di Malaysia.</p><div class="l-contact"><h4>BebasCeti.my</h4><p>📧 <b>E-mel Rasmi:</b> <a href="mailto:support@bebasceti.my">support@bebasceti.my</a></p><p>📧 <b>E-mel Privasi:</b> <a href="mailto:privasi@bebasceti.my">privasi@bebasceti.my</a></p><p>🌐 <b>Laman Web:</b> https://bebasceti.my</p><p>🇲🇾 <b>Negara Operasi:</b> Malaysia</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 02</div><h3 class="leg-title">Data Peribadi Yang Dikumpul</h3><div class="leg-body"><p><b>A. Data Yang Anda Berikan Secara Langsung:</b></p><ul><li><b>Nama panggilan</b> — untuk tujuan pengecaman dan komunikasi</li><li><b>Alamat e-mel</b> — untuk penghantaran produk digital dan komunikasi perkhidmatan</li><li><b>Nombor telefon</b> — untuk pengesahan pembayaran melalui ToyyibPay</li></ul><p><b>B. Data Yang Dikumpul Secara Automatik:</b></p><ul><li><b>Alamat IP</b> — untuk keselamatan dan pencegahan penipuan</li><li><b>Jenis pelayar dan peranti</b> — untuk pengoptimuman pengalaman pengguna</li><li><b>Data penggunaan laman web</b> — melalui kuki analitik</li></ul><p><b>C. Data Yang TIDAK Kami Kumpul:</b></p><ul><li>Nombor kad kredit atau maklumat perbankan (diproses terus oleh ToyyibPay)</li><li>Nombor Kad Pengenalan (MyKad) atau data biometrik</li><li>Data lokasi GPS atau data sensitif lain</li></ul></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 03</div><h3 class="leg-title">Tujuan Pemprosesan Data</h3><div class="leg-body"><p>Di bawah <span class="la-ref">Seksyen 6 PDPA 2010</span>, kami memproses data peribadi anda hanya untuk:</p><ol><li><b>Pemenuhan Kontrak:</b> Menghantar produk digital yang telah dibeli</li><li><b>Pemprosesan Pembayaran:</b> Memudahkan transaksi melalui ToyyibPay</li><li><b>Komunikasi Perkhidmatan:</b> E-mel konfirmasi pesanan dan sokongan</li><li><b>Penambahbaikan Produk:</b> Analisis corak penggunaan untuk tingkatkan kualiti</li><li><b>Keselamatan:</b> Mengesan dan mencegah penipuan</li><li><b>Pematuhan Undang-Undang:</b> Memenuhi obligasi di bawah undang-undang Malaysia</li></ol><div class="l-warn"><p><b>Kami TIDAK akan:</b> Menggunakan data anda untuk pengiklanan pihak ketiga, menjual data anda kepada mana-mana pihak, atau menggunakan data anda untuk tujuan di luar yang dinyatakan di atas tanpa kebenaran nyata anda.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 04</div><h3 class="leg-title">Pendedahan Kepada Pihak Ketiga</h3><div class="leg-body"><p><b>ToyyibPay (Platform Pembayaran)</b> — Data dikongsi: Nama, e-mel, nombor telefon, jumlah transaksi. Tujuan: Memproses pembayaran secara selamat. ToyyibPay adalah platform pembayaran berlesen di Malaysia.</p><p><b>Brevo (Platform E-mel)</b> — Data dikongsi: Nama, alamat e-mel. Tujuan: Menghantar e-mel konfirmasi pesanan dan link muat turun. Brevo mematuhi GDPR dan standard keselamatan antarabangsa.</p><p><b>Keperluan Undang-Undang</b> — Kami mungkin mendedahkan data peribadi anda atas perintah mahkamah yang sah atau kepada agensi kerajaan yang berkenaan mengikut undang-undang yang berkuat kuasa.</p><div class="l-warn"><p><b>Kami TIDAK berkongsi data dengan:</b> Pengiklan, broker data, rangkaian pemasaran afiliasi, atau mana-mana pihak ketiga untuk tujuan komersial di luar skop perkhidmatan kami.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 05</div><h3 class="leg-title">Pemindahan Data Antarabangsa</h3><div class="leg-body"><p>Perkhidmatan e-mel kami (Brevo) mengendalikan pelayan di Eropah. Sebarang pemindahan data peribadi ke luar Malaysia dilakukan selaras dengan <span class="la-ref">Seksyen 129 PDPA 2010</span> dengan memastikan penerima mematuhi standard perlindungan data yang setaraf, perjanjian pemprosesan data ditandatangani, dan data dienkripsi menggunakan protokol TLS/SSL.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 06</div><h3 class="leg-title">Tempoh Penyimpanan Data</h3><div class="leg-body"><ul><li><b>Data transaksi:</b> 7 tahun — selaras dengan keperluan perakaunan Malaysia di bawah <span class="la-ref">Akta Cukai Pendapatan 1967</span></li><li><b>Data komunikasi e-mel:</b> 2 tahun dari komunikasi terakhir</li><li><b>Data log keselamatan (alamat IP):</b> 90 hari</li><li><b>Data senarai e-mel:</b> Selagi anda belum unsubscribe</li></ul></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 07</div><h3 class="leg-title">Hak Subjek Data Anda</h3><div class="leg-body"><p>Di bawah <span class="la-ref">PDPA 2010</span>, anda mempunyai hak-hak berikut:</p><ul><li><b>Hak Akses (Seksyen 30):</b> Meminta salinan data peribadi yang kami simpan</li><li><b>Hak Pembetulan (Seksyen 34):</b> Meminta pembetulan data yang tidak tepat</li><li><b>Hak Menarik Balik Kebenaran (Seksyen 38):</b> Menarik balik kebenaran untuk pemprosesan data pada bila-bila masa</li><li><b>Hak Membantah Pemprosesan:</b> Membantah pemprosesan untuk tujuan pemasaran langsung</li><li><b>Hak Padam:</b> Memohon pemadaman data tertakluk kepada obligasi undang-undang</li></ul><p>Hantar permohonan bertulis kepada <a href="mailto:privasi@bebasceti.my" style="color:var(--red)">privasi@bebasceti.my</a>. Kami akan merespons dalam tempoh <b>21 hari bekerja</b>.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 08</div><h3 class="leg-title">Keselamatan Data</h3><div class="leg-body"><ul><li><b>Enkripsi HTTPS/TLS:</b> Semua komunikasi dilindungi enkripsi SSL/TLS</li><li><b>Akses Terhad:</b> Data peribadi hanya boleh diakses oleh kakitangan yang memerlukan</li><li><b>Platform Pembayaran Selamat:</b> Kami tidak menyimpan maklumat kad kredit — diproses terus oleh ToyyibPay mengikut standard PCI-DSS</li><li><b>Pemantauan Berterusan:</b> Log keselamatan dipantau untuk mengesan aktiviti mencurigakan</li></ul></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 09</div><h3 class="leg-title">Kuki (Cookies)</h3><div class="leg-body"><ul><li><b>Kuki Sesi:</b> Kuki sementara yang dipadam apabila pelayar ditutup — digunakan untuk timer tawaran dan sesi pembelian</li><li><b>Kuki Keutamaan:</b> Menyimpan pilihan pengguna</li><li><b>Kuki Analitik:</b> Mengumpul data penggunaan tanpa nama</li></ul><p>Anda boleh mengawal atau mematikan kuki melalui tetapan pelayar anda.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 10</div><h3 class="leg-title">Pautan Pihak Ketiga</h3><div class="leg-body"><p>Laman web ini mungkin mengandungi pautan kepada laman web pihak ketiga. Kami tidak bertanggungjawab ke atas amalan privasi laman web tersebut dan menggalakkan anda membaca Dasar Privasi mereka.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 11</div><h3 class="leg-title">Kanak-Kanak</h3><div class="leg-body"><p>Laman web dan perkhidmatan kami tidak ditujukan kepada kanak-kanak di bawah 18 tahun. Kami tidak dengan sengaja mengumpul data peribadi daripada kanak-kanak.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 12</div><h3 class="leg-title">Pindaan Dasar Ini</h3><div class="leg-body"><p>Kami berhak meminda Dasar Privasi ini dari semasa ke semasa. Perubahan material akan diberitahu melalui e-mel kepada pelanggan berdaftar dan/atau notis yang jelas di laman web kami.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 13</div><h3 class="leg-title">Hubungi Kami</h3><div class="leg-body"><div class="l-contact"><h4>Pegawai Privasi Data — BebasCeti.my</h4><p>📧 <b>E-mel Privasi:</b> <a href="mailto:privasi@bebasceti.my">privasi@bebasceti.my</a></p><p>📧 <b>E-mel Sokongan:</b> <a href="mailto:support@bebasceti.my">support@bebasceti.my</a></p><p>⏱️ <b>Masa Respons:</b> Dalam 21 hari bekerja (selaras dengan PDPA 2010)</p></div><p style="margin-top:14px">Jika tidak berpuas hati dengan respons kami, anda berhak membuat aduan kepada <b>Jabatan Perlindungan Data Peribadi Malaysia (JPDP)</b>: <a href="https://www.pdp.gov.my" target="_blank" style="color:var(--red)">www.pdp.gov.my</a></p></div></div>
+
+  </div>
+</div>
+
+<!-- TERMS DRAWER -->
+<div class="drawer" id="dTerms">
+  <div class="drawer-head">
+    <h2>Terma &amp; Syarat</h2>
+    <button class="drawer-close" onclick="closeDrawer()">×</button>
+  </div>
+  <div class="drawer-meta">
+    <span>📅 Kuat Kuasa: 1 Januari 2026</span>
+    <span>🔄 Dikemas kini: 1 Mei 2026</span>
+    <span>⚖️ Dikawal oleh undang-undang Malaysia</span>
+  </div>
+  <div class="drawer-body">
+
+    <div class="l-warn" style="margin-bottom:32px"><p><b>PENAFIAN PENTING:</b> Produk digital yang dijual di BebasCeti.my adalah bahan pendidikan semata-mata. Kandungan tidak membentuk nasihat guaman, kewangan, atau perubatan dan tidak seharusnya digunakan sebagai pengganti kepada nasihat profesional yang berkelayakan.</p></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 01</div><h3 class="leg-title">Penerimaan Terma</h3><div class="leg-body"><p>Dengan mengakses laman web BebasCeti.my atau membuat sebarang pembelian, anda (<b>"Pengguna"</b> atau <b>"Pembeli"</b>) bersetuju untuk terikat dengan Terma &amp; Syarat ini secara penuh dan tanpa syarat. Perjanjian ini merupakan kontrak yang mengikat secara sah di bawah <span class="la-ref">Akta Kontrak 1950</span> Malaysia.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 02</div><h3 class="leg-title">Definisi</h3><div class="leg-body"><ul><li><b>"Kami / Pengendali"</b> — pemilik dan pengendali BebasCeti.my</li><li><b>"Anda / Pengguna / Pembeli"</b> — individu yang mengakses laman web atau membeli produk</li><li><b>"Produk"</b> — semua produk digital termasuk e-book, panduan, dan template dokumen</li><li><b>"Transaksi"</b> — sebarang pembelian yang dibuat melalui ToyyibPay</li><li><b>"Laman Web"</b> — https://bebasceti.my dan semua halaman berkaitan</li></ul></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 03</div><h3 class="leg-title">Sifat Produk & Penafian Penting</h3><div class="leg-body"><p>Semua produk yang dijual di BebasCeti.my adalah <b>bahan pendidikan dan maklumat umum semata-mata</b>.</p><div class="l-warn"><p><b>Produk kami BUKAN dan TIDAK BOLEH dianggap sebagai:</b><br>(i) Nasihat guaman atau perkhidmatan guaman dalam apa jua bentuk;<br>(ii) Pengganti kepada nasihat daripada peguam yang berkelayakan dan berdaftar;<br>(iii) Jaminan bahawa sebarang tindakan berdasarkan kandungan akan menghasilkan keputusan tertentu;<br>(iv) Nasihat kewangan, cukai, atau pelaburan;<br>(v) Perkhidmatan pengurusan atau penyelesaian hutang.</p></div><p><b>Penafian Keputusan:</b> Kami tidak membuat sebarang jaminan bahawa penggunaan produk kami akan menghentikan semua bentuk ugutan, melangsaikan hutang, atau menghasilkan tindakan polis atau keputusan mahkamah yang spesifik.</p><div class="l-info"><p><b>Dalam keadaan ancaman fizikal segera:</b> Hubungi polis melalui talian kecemasan 999 atau balai polis berhampiran dengan serta-merta. Produk kami tidak menggantikan tindakan kecemasan sedemikian.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 04</div><h3 class="leg-title">Pembelian & Pembayaran</h3><div class="leg-body"><p>Semua transaksi diproses melalui <b>ToyyibPay</b>, platform pembayaran berlesen di Malaysia. Semua harga dinyatakan dalam Ringgit Malaysia (RM). Kontrak jualan hanya wujud apabila pembayaran disahkan oleh ToyyibPay dan e-mel pengesahan diterima. Di bawah <span class="la-ref">Akta Perlindungan Pengguna 1999</span> dan <span class="la-ref">Akta Perdagangan Elektronik 2006</span>, anda mempunyai hak-hak perlindungan sebagai pengguna dalam transaksi dalam talian ini.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 05</div><h3 class="leg-title">Penghantaran Produk Digital</h3><div class="leg-body"><p>Semua produk adalah dalam format digital dan akan dihantar melalui e-mel dalam tempoh <b>5 hingga 15 minit</b> selepas pembayaran berjaya disahkan. Anda bertanggungjawab memastikan alamat e-mel yang diberikan adalah tepat dan aktif. Jika tidak menerima e-mel dalam masa 30 minit, hubungi <a href="mailto:support@bebasceti.my" style="color:var(--red)">support@bebasceti.my</a> dengan bukti pembayaran.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 06</div><h3 class="leg-title">Dasar Bayaran Balik (Refund)</h3><div class="leg-body"><p>Kami menawarkan <b>Jaminan Wang Kembali 7 Hari</b>:</p><table class="refund-tbl"><tr><th>Senario</th><th>Status</th><th>Proses</th></tr><tr><td>Tidak berpuas hati dalam 7 hari dari pembelian</td><td><span class="t-ok">✓ LAYAK</span></td><td>Refund penuh 3–7 hari bekerja</td></tr><tr><td>E-mel tidak diterima (kesilapan sistem)</td><td><span class="t-ok">✓ LAYAK</span></td><td>Refund penuh atau penghantaran semula</td></tr><tr><td>Pembelian berganda produk yang sama</td><td><span class="t-ok">✓ LAYAK</span></td><td>Refund untuk pembelian berganda</td></tr><tr><td>Permohonan selepas 7 hari dari pembelian</td><td><span class="t-no">✕ TIDAK LAYAK</span></td><td>—</td></tr></table><p><b>Prosedur:</b> Hantar e-mel ke <a href="mailto:support@bebasceti.my" style="color:var(--red)">support@bebasceti.my</a> dengan subjek: "PERMOHONAN REFUND — [Nama Pakej] — [Nombor Pesanan]" berserta bukti pembayaran.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 07</div><h3 class="leg-title">Hak Harta Intelek</h3><div class="leg-body"><p>Semua kandungan dalam produk BebasCeti.my dilindungi di bawah <span class="la-ref">Akta Hak Cipta 1987</span> Malaysia. Dengan membeli, anda diberikan lesen peribadi, tidak eksklusif, dan tidak boleh dipindah milik untuk kegunaan peribadi sahaja.</p><div class="l-warn"><p><b>Anda TIDAK dibenarkan untuk:</b> Menyalin, mengedar, berkongsi, atau menjual semula produk dalam apa jua bentuk; memuat naik ke platform awam; mengubah suai atau mencipta karya terbitan; atau memindahkan lesen kepada pihak ketiga. Pelanggaran boleh mengakibatkan tindakan undang-undang.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 08</div><h3 class="leg-title">Larangan Penggunaan</h3><div class="leg-body"><p>Anda bersetuju untuk TIDAK menggunakan laman web atau produk kami untuk mengelak pembayaran hutang yang sah, membuat aduan palsu kepada pihak berkuasa, atau menjual semula kandungan tanpa kebenaran.</p><div class="l-warn"><p><b>Amaran:</b> Mengemukakan laporan polis palsu atau aduan palsu adalah kesalahan jenayah serius di bawah <span class="la-ref">Seksyen 182 Kanun Keseksaan</span>. Template dokumen hendaklah digunakan dengan maklumat yang benar dan tepat sahaja.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 09</div><h3 class="leg-title">Had Liabiliti</h3><div class="leg-body"><p>Setakat yang dibenarkan oleh undang-undang Malaysia, BebasCeti.my tidak akan bertanggungjawab ke atas sebarang kerugian langsung, tidak langsung, atau berbangkit yang timbul daripada penggunaan produk kami, termasuk keputusan atau tindakan yang diambil berdasarkan kandungan produk. Liabiliti maksimum kami tidak akan melebihi jumlah yang anda bayar untuk produk berkenaan.</p><div class="l-info"><p><b>Nota:</b> Had liabiliti ini tidak mengurangkan hak-hak anda di bawah <span class="la-ref">Akta Perlindungan Pengguna 1999</span> untuk produk yang tidak menepati penerangan atau yang cacat.</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 10</div><h3 class="leg-title">Jaminan & Waranti</h3><div class="leg-body"><div class="l-green"><p><b>Yang KAMI jaminkan:</b><br>✓ Produk digital akan dihantar mengikut penerangan yang diiklankan<br>✓ Kandungan produk adalah berdasarkan maklumat yang tepat pada tarikh penerbitan<br>✓ Jaminan wang kembali 7 hari tanpa syarat yang ketat<br>✓ Kami tidak mengemukakan representasi yang mengelirukan tentang sifat atau kesan produk</p></div></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 11</div><h3 class="leg-title">Perlindungan Pengguna</h3><div class="leg-body"><p>Kami mengiktiraf dan menghormati hak-hak anda di bawah <span class="la-ref">Akta Perlindungan Pengguna 1999</span> — termasuk hak mendapat maklumat yang jelas dan tepat, hak mendapat produk yang menepati penerangan, dan hak membuat aduan kepada Tribunal Tuntutan Pengguna. Maklumat lanjut: <a href="https://www.kpdnhep.gov.my" target="_blank" style="color:var(--red)">www.kpdnhep.gov.my</a></p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 12</div><h3 class="leg-title">Perubahan Harga & Produk</h3><div class="leg-body"><p>Kami berhak mengubah harga produk pada bila-bila masa — perubahan hanya terpakai untuk pembelian baharu dan tidak menjejaskan pembelian yang telah selesai. Kami juga berhak mengemas kini atau menambah baik kandungan produk tanpa notis awal.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 13</div><h3 class="leg-title">Penggantungan Perkhidmatan</h3><div class="leg-body"><p>Kami berhak menggantung atau menamatkan akses anda tanpa notis awal jika anda melanggar terma dalam Perjanjian ini, menggunakan produk untuk tujuan penipuan, atau menyebarkan kandungan produk secara haram. Penggantungan atas alasan pelanggaran tidak memberi hak kepada sebarang refund.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 14</div><h3 class="leg-title">Penyelesaian Pertikaian</h3><div class="leg-body"><p><b>Langkah 1 — Penyelesaian Langsung:</b> Hubungi kami di <a href="mailto:support@bebasceti.my" style="color:var(--red)">support@bebasceti.my</a>. Kami akan merespons dalam 7 hari bekerja.</p><p><b>Langkah 2 — Tribunal Tuntutan Pengguna:</b> Untuk tuntutan tidak melebihi RM50,000 di bawah <span class="la-ref">Akta Perlindungan Pengguna 1999</span>.</p><p><b>Langkah 3 — Mahkamah Malaysia:</b> Untuk tuntutan melebihi bidang kuasa Tribunal.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 15</div><h3 class="leg-title">Undang-Undang yang Mengawal</h3><div class="leg-body"><p>Perjanjian ini ditadbir oleh undang-undang Malaysia, termasuk: <span class="la-ref">Akta Kontrak 1950</span> · <span class="la-ref">Akta Perlindungan Pengguna 1999</span> · <span class="la-ref">Akta Perdagangan Elektronik 2006</span> · <span class="la-ref">Akta Hak Cipta 1987</span> · <span class="la-ref">Akta Perlindungan Data Peribadi 2010</span>. Bidang kuasa eksklusif adalah mahkamah di Malaysia.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 16</div><h3 class="leg-title">Pindaan Terma</h3><div class="leg-body"><p>Kami berhak meminda Terma &amp; Syarat ini pada bila-bila masa. Notis perubahan material akan diberikan melalui e-mel sekurang-kurangnya 14 hari sebelum berkuat kuasa.</p></div></div>
+
+    <div class="leg-section"><div class="leg-num">Seksyen 17</div><h3 class="leg-title">Hubungi Kami</h3><div class="leg-body"><div class="l-contact"><h4>BebasCeti.my — Sokongan Pelanggan</h4><p>📧 <b>E-mel Sokongan:</b> <a href="mailto:support@bebasceti.my">support@bebasceti.my</a></p><p>📧 <b>E-mel Undang-Undang:</b> <a href="mailto:legal@bebasceti.my">legal@bebasceti.my</a></p><p>⏱️ <b>Masa Respons:</b> Dalam 7 hari bekerja</p></div><p style="margin-top:14px;font-size:12.5px;color:var(--faint)">Dokumen ini adalah terma kontrak yang mengikat secara sah. Penggunaan laman web atau pembelian produk dianggap sebagai penerimaan penuh terma ini.</p></div></div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('v')}),{threshold:.1});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+/* STICKY CTA */
+const sCta=document.getElementById('sCta');
+window.addEventListener('scroll',()=>{sCta.classList.toggle('show',window.scrollY>700)},{passive:true});
+
+/* FAQ */
+document.querySelectorAll('.fq').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const open=el.classList.contains('open');
+    document.querySelectorAll('.fq').forEach(f=>f.classList.remove('open'));
+    if(!open)el.classList.add('open');
+  });
+});
+
+/* COUNTDOWN */
+(function(){
+  let e=sessionStorage.getItem('bc3_end');
+  if(!e){e=Date.now()+12*3600*1000;sessionStorage.setItem('bc3_end',e);}
+  function u(){
+    const d=Math.max(0,parseInt(e)-Date.now());
+    document.getElementById('cdH').textContent=String(Math.floor(d/3600000)).padStart(2,'0');
+    document.getElementById('cdM').textContent=String(Math.floor(d%3600000/60000)).padStart(2,'0');
+    document.getElementById('cdS').textContent=String(Math.floor(d%60000/1000)).padStart(2,'0');
+  }
+  u();setInterval(u,1000);
+})();
+
+/* COUNT-UP */
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const ob2=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      const t=parseInt(el.getAttribute('data-count'));
+      let c=0;const s=Math.ceil(t/60);
+      const tm=setInterval(()=>{c=Math.min(c+s,t);el.textContent=c.toLocaleString()+'+';if(c>=t)clearInterval(tm);},25);
+      ob2.disconnect();
+    }
+  },{threshold:.5});
+  ob2.observe(el);
+});
+
+/* DRAWER */
+let currentDrawer=null;
+function openDrawer(type){
+  closeOrder();
+  document.getElementById('dOverlay').classList.add('open');
+  if(type==='privacy'){document.getElementById('dPrivacy').classList.add('open');currentDrawer='dPrivacy';}
+  else{document.getElementById('dTerms').classList.add('open');currentDrawer='dTerms';}
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('dOverlay').classList.remove('open');
+  if(currentDrawer)document.getElementById(currentDrawer).classList.remove('open');
+  currentDrawer=null;
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();closeOrder();}});
+
+/* ORDER MODAL */
+let curPkg='';
+function openOrder(name,price){
+  curPkg=name;
+  document.getElementById('oPkg').textContent=name;
+  document.getElementById('oName').textContent=name;
+  document.getElementById('oPrice').textContent=price;
+  document.getElementById('oModal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeOrder(){
+  document.getElementById('oModal').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.getElementById('oModal').addEventListener('click',e=>{if(e.target===document.getElementById('oModal'))closeOrder();});
+function submitOrder(){
+  const n=document.getElementById('fN').value.trim();
+  const em=document.getElementById('fE').value.trim();
+  const p=document.getElementById('fP').value.trim();
+  if(!n||!em||!p){alert('Sila lengkapkan semua maklumat.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Sila masukkan alamat e-mel yang sah.');return;}
+  const codes={'PAKEJ SEDAR':'BILLCODE_RM29','PAKEJ TINDAK':'BILLCODE_RM59','PAKEJ KOMANDO':'BILLCODE_RM97'};
+  const c=codes[curPkg]||codes['PAKEJ TINDAK'];
+  window.location.href=`https://toyyibpay.com/${c}?billName=${encodeURIComponent(n)}&billEmail=${encodeURIComponent(em)}&billPhone=${encodeURIComponent(p)}`;
+}
+</script>
+</body>
+</html>
