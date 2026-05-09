@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Pembayaran — Survival Guide</title>
+    <title>Status Pembayaran — BebasCeti.my</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
 </head>
@@ -49,7 +49,7 @@ $s = $config[$statusId] ?? $config['3'];
     <div class="bg-slate-800 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border <?= $s['border'] ?> border-2">
         <!-- Header -->
         <div class="bg-slate-900 px-8 pt-10 pb-6 text-center border-b border-slate-700">
-            <p class="font-black text-xl tracking-wider text-white mb-1">SURVIVAL<span class="text-red-500">GUIDE</span></p>
+            <p class="font-black text-xl tracking-wider text-white mb-1">Bebas<span class="text-red-500">Ceti</span>.my</p>
             <span class="<?= $s['badge'] ?> text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
                 <?= $s['badge_text'] ?>
             </span>
