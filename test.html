@@ -975,15 +975,34 @@ function closeOrder(){
   document.body.style.overflow='';
 }
 document.getElementById('oModal').addEventListener('click',e=>{if(e.target===document.getElementById('oModal'))closeOrder();});
-function submitOrder(){
+async function submitOrder(){
   const n=document.getElementById('fN').value.trim();
   const em=document.getElementById('fE').value.trim();
   const p=document.getElementById('fP').value.trim();
   if(!n||!em||!p){alert('Sila lengkapkan semua maklumat.');return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Sila masukkan alamat e-mel yang sah.');return;}
-  const codes={'PAKEJ SEDAR':'BILLCODE_RM29','PAKEJ TINDAK':'BILLCODE_RM59','PAKEJ KOMANDO':'BILLCODE_RM97'};
-  const c=codes[curPkg]||codes['PAKEJ TINDAK'];
-  window.location.href=`https://toyyibpay.com/${c}?billName=${encodeURIComponent(n)}&billEmail=${encodeURIComponent(em)}&billPhone=${encodeURIComponent(p)}`;
+
+  const btn=document.querySelector('#oModal .btn-main');
+  const origText=btn.textContent;
+  btn.textContent='Memproses…';btn.disabled=true;
+
+  try{
+    const res=await fetch('create-bill.php',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:n,email:em,phone:p,package:curPkg})
+    });
+    const data=await res.json();
+    if(data.success&&data.payment_url){
+      window.location.href=data.payment_url;
+    }else{
+      alert(data.error||'Ralat tidak diketahui. Sila cuba semula.');
+      btn.textContent=origText;btn.disabled=false;
+    }
+  }catch(err){
+    alert('Masalah sambungan. Sila cuba semula.');
+    btn.textContent=origText;btn.disabled=false;
+  }
 }
 </script>
 </body>
