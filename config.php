@@ -12,15 +12,33 @@ define('TP_BASE_URL',      'https://toyyibpay.com');
 // Brevo (Sendinblue)
 define('BREVO_API_KEY',    getenv('BREVO_API_KEY')           ?: 'YOUR_BREVO_API_KEY');
 
-// Ebook
-define('EBOOK_PRICE',      getenv('EBOOK_PRICE')             ?: '1990');  // in cents → RM 19.90
-define('EBOOK_DOWNLOAD_URL', getenv('EBOOK_DOWNLOAD_URL')   ?: 'https://your-domain.com/ebook.pdf');
-define('BILL_NAME', 'Survival Guide Ahlong');
-define('BILL_DESC',        'Ebook Survival Guide 2026');
-
 // App
 define('APP_URL',          rtrim(getenv('APP_URL') ?: 'https://your-app.onrender.com', '/'));
 
 // Email sender (must match your Brevo verified sender)
-define('SENDER_EMAIL',     getenv('SENDER_EMAIL')            ?: 'noreply@yourdomain.com');
-define('SENDER_NAME',      getenv('SENDER_NAME')             ?: 'Survival Guide');
+define('SENDER_EMAIL',     getenv('SENDER_EMAIL')            ?: 'noreply@bebasceti.my');
+define('SENDER_NAME',      getenv('SENDER_NAME')             ?: 'BebasCeti.my');
+
+// ── PACKAGES ──────────────────────────────────────────────
+// Price in cents (RM29 = 2900, RM59 = 5900, RM97 = 9700)
+// Set DOWNLOAD_URL_* per package in your Render env vars
+define('PACKAGES', [
+    'PAKEJ SEDAR' => [
+        'price'        => (int)(getenv('PRICE_SEDAR')    ?: 2900),
+        'bill_name'    => 'BebasCeti — Pakej Sedar',
+        'bill_desc'    => 'BebasCeti.my Pakej Sedar (2 Dokumen)',
+        'download_url' => getenv('DOWNLOAD_URL_SEDAR')   ?: 'https://bebasceti.my/download/sedar',
+    ],
+    'PAKEJ TINDAK' => [
+        'price'        => (int)(getenv('PRICE_TINDAK')   ?: 5900),
+        'bill_name'    => 'BebasCeti — Pakej Tindak',
+        'bill_desc'    => 'BebasCeti.my Pakej Tindak (4 Dokumen)',
+        'download_url' => getenv('DOWNLOAD_URL_TINDAK')  ?: 'https://bebasceti.my/download/tindak',
+    ],
+    'PAKEJ KOMANDO' => [
+        'price'        => (int)(getenv('PRICE_KOMANDO')  ?: 9700),
+        'bill_name'    => 'BebasCeti — Pakej Komando',
+        'bill_desc'    => 'BebasCeti.my Pakej Komando (6 Dokumen Penuh)',
+        'download_url' => getenv('DOWNLOAD_URL_KOMANDO') ?: 'https://bebasceti.my/download/komando',
+    ],
+]);
