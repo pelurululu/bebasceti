@@ -15,39 +15,47 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST')    { http_response_code(405); exit; }
 require_once __DIR__ . '/config.php';
 
 // ---------- Sanitise input ----------
-$body  = json_decode(file_get_contents('php://input'), true);
-$name  = trim(strip_tags($body['name']  ?? ''));
-$email = trim(strip_tags($body['email'] ?? ''));
-$phone = trim(strip_tags($body['phone'] ?? ''));
+$body    = json_decode(file_get_contents('php://input'), true);
+$name    = trim(strip_tags($body['name']    ?? ''));
+$email   = trim(strip_tags($body['email']   ?? ''));
+$phone   = trim(strip_tags($body['phone']   ?? ''));
+$package = trim(strip_tags($body['package'] ?? ''));
 
 if (!$name || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$phone) {
     echo json_encode(['success' => false, 'error' => 'Sila isi semua maklumat dengan betul.']);
     exit;
 }
 
+// ---------- Resolve package ----------
+$packages = PACKAGES;
+if (!isset($packages[$package])) {
+    $package = 'PAKEJ TINDAK'; // safe default
+}
+$pkg = $packages[$package];
+
 // ---------- Create ToyyibPay bill ----------
-$externalRef = 'ebook_' . time() . '_' . bin2hex(random_bytes(4));
+$externalRef = 'bc_' . time() . '_' . bin2hex(random_bytes(4));
 
 $billData = [
-    'userSecretKey'          => TP_SECRET_KEY,
-    'categoryCode'           => TP_CATEGORY_CODE,
-    'billName'               => BILL_NAME,
-    'billDescription'        => BILL_DESC,
-    'billPriceSetting'       => 1,              // 1 = fixed price
-    'billPayorInfo'          => 1,              // 1 = collect payor info
-    'billAmount'             => EBOOK_PRICE,    // in cents
-    'billReturnUrl'          => APP_URL . '/payment-return.php',
-    'billCallbackUrl'        => APP_URL . '/payment-callback.php',
-    'billExternalReferenceNo'=> $externalRef,
-    'billTo'                 => $name,
-    'billEmail'              => $email,
-    'billPhone'              => $phone,
-    'billSplitPayment'       => 0,
-    'billSplitPaymentArgs'   => '',
-    'billPaymentChannel'     => 0,              // 0 = all channels (FPX + card)
-    'billContentEmail'       => 'Terima kasih kerana membeli Survival Guide kami! Link muat turun akan dihantar ke e-mel anda.',
-    'billChargeToCustomer'   => 1,              // 1 = buyer absorbs processing fee
-    'billExpiryDays'         => 1,
+    'userSecretKey'           => TP_SECRET_KEY,
+    'categoryCode'            => TP_CATEGORY_CODE,
+    'billName'                => $pkg['bill_name'],
+    'billDescription'         => $pkg['bill_desc'],
+    'billPriceSetting'        => 1,              // 1 = fixed price
+    'billPayorInfo'           => 1,              // 1 = collect payor info
+    'billAmount'              => $pkg['price'],  // in cents
+    'billReturnUrl'           => APP_URL . '/payment-return.php',
+    'billCallbackUrl'         => APP_URL . '/payment-callback.php',
+    'billExternalReferenceNo' => $externalRef,
+    'billTo'                  => $name,
+    'billEmail'               => $email,
+    'billPhone'               => $phone,
+    'billSplitPayment'        => 0,
+    'billSplitPaymentArgs'    => '',
+    'billPaymentChannel'      => 0,              // 0 = all channels (FPX + card)
+    'billContentEmail'        => 'Terima kasih kerana membeli pakej BebasCeti.my! Link muat turun akan dihantar ke e-mel anda.',
+    'billChargeToCustomer'    => 1,              // 1 = buyer absorbs processing fee
+    'billExpiryDays'          => 1,
 ];
 
 $ch = curl_init(TP_BASE_URL . '/index.php/api/createBill');
@@ -71,17 +79,19 @@ if ($curlErr) {
 $result = json_decode($response, true);
 
 if ($result && isset($result[0]['BillCode'])) {
-    $billCode    = $result[0]['BillCode'];
-    $paymentUrl  = TP_BASE_URL . '/' . $billCode;
+    $billCode   = $result[0]['BillCode'];
+    $paymentUrl = TP_BASE_URL . '/' . $billCode;
 
-    // Save buyer info keyed by billCode so callback can retrieve it
+    // Save buyer info + package keyed by billCode so callback can retrieve it
     $dataFile = __DIR__ . '/data/' . preg_replace('/[^a-zA-Z0-9_-]/', '', $billCode) . '.json';
     file_put_contents($dataFile, json_encode([
-        'name'  => $name,
-        'email' => $email,
-        'phone' => $phone,
-        'ref'   => $externalRef,
-        'ts'    => time(),
+        'name'        => $name,
+        'email'       => $email,
+        'phone'       => $phone,
+        'package'     => $package,
+        'download_url'=> $pkg['download_url'],
+        'ref'         => $externalRef,
+        'ts'          => time(),
     ]));
 
     echo json_encode(['success' => true, 'payment_url' => $paymentUrl]);
@@ -90,6 +100,5 @@ if ($result && isset($result[0]['BillCode'])) {
     echo json_encode([
         'success' => false,
         'error'   => 'Gagal mencipta bil. Cuba sebentar lagi.',
-        
     ]);
 }
