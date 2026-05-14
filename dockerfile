@@ -22,8 +22,9 @@ RUN mkdir -p /var/www/html/data /var/www/html/logs \
  && chmod 750 /var/www/html/data /var/www/html/logs
 
 # Block direct web access to sensitive dirs
-RUN echo "Deny from all" > /var/www/html/data/.htaccess \
- && echo "Deny from all" > /var/www/html/logs/.htaccess
+# ✅ Apache 2.4 syntax
+RUN echo "Require all denied" > /var/www/html/data/.htaccess \
+ && echo "Require all denied" > /var/www/html/logs/.htaccess
 
 # Render sets $PORT — Apache must listen on that port
 CMD bash -c "\
