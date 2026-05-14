@@ -982,7 +982,7 @@ async function submitOrder(){
   if(!n||!em||!p){alert('Sila lengkapkan semua maklumat.');return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Sila masukkan alamat e-mel yang sah.');return;}
 
-  const btn=document.querySelector('#oModal .btn-main');
+const btn = document.querySelector('#oModal .frm-sub');
   const origText=btn.textContent;
   btn.textContent='Memproses…';btn.disabled=true;
 
